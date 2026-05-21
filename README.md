@@ -6,7 +6,8 @@ contracts.
 ## Contents
 
 - [SUMMARY.md](./SUMMARY.md): bounded context description, scope, and main domain elements
-- `domain-model.zdl`: source of truth for the notification aggregate, lifecycle, commands, and events
-- `asyncapi.yml`: AsyncAPI contract generated from the ZDL model
-- `openapi.yml`: HTTP API contract generated from the ZDL model
-- `avro/`: Avro event schemas referenced by the AsyncAPI document
+- [CHANGELOG.md](./CHANGELOG.md): documentation change history for this repository
+- [domain-model.zdl](./domain-model.zdl): source of truth for the notification aggregate, lifecycle, commands, and events
+- [asyncapi.yml](./asyncapi.yml): AsyncAPI contract generated from the ZDL model
+- [openapi.yml](./openapi.yml): HTTP API contract generated from the ZDL model
+- [avro/](./avro/): Avro event schemas referenced by the AsyncAPI document
