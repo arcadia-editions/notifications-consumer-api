@@ -1,0 +1,15 @@
+{
+  "type" : "record",
+  "name" : "SendOrderConfirmationInput",
+  "namespace" : "com.arcadiaeditions.notifications.consumer.events.avro",
+  "fields" : [ {
+    "name" : "orderId",
+    "type" : "string"
+  }, {
+    "name" : "customerId",
+    "type" : "string"
+  }, {
+    "name" : "email",
+    "type" : "string"
+  } ]
+}

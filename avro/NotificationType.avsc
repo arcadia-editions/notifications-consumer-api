@@ -1,0 +1,6 @@
+{
+  "type" : "enum",
+  "name" : "NotificationType",
+  "namespace" : "com.arcadiaeditions.notifications.consumer.events.avro",
+  "symbols" : [ "ORDER_CONFIRMATION", "STOCK_UNAVAILABLE", "ORDER_CANCELLED" ]
+}

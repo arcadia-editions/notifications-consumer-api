@@ -1,0 +1,15 @@
+{
+  "type" : "record",
+  "name" : "SendStockUnavailableNotificationInput",
+  "namespace" : "com.arcadiaeditions.notifications.consumer.events.avro",
+  "fields" : [ {
+    "name" : "customerId",
+    "type" : "string"
+  }, {
+    "name" : "sku",
+    "type" : "string"
+  }, {
+    "name" : "email",
+    "type" : "string"
+  } ]
+}

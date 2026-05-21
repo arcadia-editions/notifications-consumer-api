@@ -1,0 +1,33 @@
+{
+  "type" : "record",
+  "name" : "NotificationDeliveryFailed",
+  "namespace" : "com.arcadiaeditions.notifications.consumer.events.avro",
+  "fields" : [ {
+    "name" : "notificationId",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "orderId",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "customerId",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "sku",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "type",
+    "type" : "NotificationType"
+  }, {
+    "name" : "channel",
+    "type" : "NotificationChannel"
+  }, {
+    "name" : "recipient",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "reason",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "failedAt",
+    "type" : [ "null", "string" ]
+  } ]
+}

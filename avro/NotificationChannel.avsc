@@ -1,0 +1,6 @@
+{
+  "type" : "enum",
+  "name" : "NotificationChannel",
+  "namespace" : "com.arcadiaeditions.notifications.consumer.events.avro",
+  "symbols" : [ "EMAIL", "SMS", "PUSH" ]
+}

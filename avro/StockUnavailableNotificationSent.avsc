@@ -1,0 +1,24 @@
+{
+  "type" : "record",
+  "name" : "StockUnavailableNotificationSent",
+  "namespace" : "com.arcadiaeditions.notifications.consumer.events.avro",
+  "fields" : [ {
+    "name" : "notificationId",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "customerId",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "sku",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "channel",
+    "type" : "NotificationChannel"
+  }, {
+    "name" : "recipient",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "sentAt",
+    "type" : [ "null", "string" ]
+  } ]
+}
