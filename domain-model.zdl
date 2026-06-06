@@ -1,4 +1,5 @@
 config {
+    id "urn:com.arcadiaeditions.notifications.consumer"
     title "Arcadia Editions - Notifications Consumer"
     basePackage "com.arcadiaeditions.notifications.consumer"
     persistence jpa
@@ -14,6 +15,11 @@ config {
             includeKafkaCommonHeaders true
             targetFile "./asyncapi.yml"
         }
+        ZDLToAsyncAPIClientPlugin {
+            id "urn:com.arcadiaeditions.notifications.consumer:client"
+            title "Arcadia Editions - Notifications Consumer - AsyncAPI Client"
+            targetFile "./asyncapi-client.yml"
+        }
         /** Generates an OpenAPI 3.0 specification from this ZDL model. */
         ZDLToOpenAPIPlugin {
             idType integer
@@ -21,6 +27,11 @@ config {
             targetFile "./openapi.yml"
         }
     }
+}
+
+apis {
+    asyncapi client PaymentsProcessingApi "https://raw.githubusercontent.com/arcadia-editions/payments-processing-api/main/asyncapi.yml"
+    asyncapi client OrdersCheckoutApi "https://raw.githubusercontent.com/arcadia-editions/orders-checkout-api/main/asyncapi.yml"
 }
 
 @aggregate
@@ -82,20 +93,20 @@ input SendOrderCancelledNotificationInput {
 @rest("/notifications")
 service NotificationsConsumerService for (Notification) {
 
-    @asyncapi({ channel: "PaymentCapturedEventsChannel", topic: "payments-processing.events.payment-captured" })
+    @asyncapi(api: PaymentsProcessingApi, channel: PaymentCapturedChannel)
     @transition(to: PENDING)
     sendOrderConfirmation(SendOrderConfirmationInput) Notification withEvents [OrderConfirmationSent | NotificationDeliveryFailed]
 
-    @asyncapi({ channel: "StockUnavailableEventsChannel", topic: "catalog-inventory.events.stock-unavailable" })
+    @asyncapi(api: OrdersCheckoutApi, channel: StockUnavailableChannel)
     @transition(to: PENDING)
     sendStockUnavailableNotification(SendStockUnavailableNotificationInput) Notification withEvents [StockUnavailableNotificationSent | NotificationDeliveryFailed]
 
-    @asyncapi({ channel: "OrderCancelledEventsChannel", topic: "orders-checkout.events.order-cancelled" })
+    @asyncapi(api: OrdersCheckoutApi, channel: OrderCancelledChannel)
     @transition(to: PENDING)
     sendOrderCancelledNotification(SendOrderCancelledNotificationInput) Notification withEvents [OrderCancelledNotificationSent | NotificationDeliveryFailed]
 }
 
-@asyncapi({ channel: "OrderConfirmationSentEventsChannel", topic: "notifications-consumer.events.order-confirmation-sent" })
+@asyncapi({ channel: "OrderConfirmationSentChannel", topic: "notifications-consumer.events.order-confirmation-sent" })
 event OrderConfirmationSent {
     notificationId String
     orderId String
@@ -105,7 +116,7 @@ event OrderConfirmationSent {
     sentAt Instant
 }
 
-@asyncapi({ channel: "StockUnavailableNotificationSentEventsChannel", topic: "notifications-consumer.events.stock-unavailable-notification-sent" })
+@asyncapi({ channel: "StockUnavailableNotificationSentChannel", topic: "notifications-consumer.events.stock-unavailable-notification-sent" })
 event StockUnavailableNotificationSent {
     notificationId String
     customerId String
@@ -115,7 +126,7 @@ event StockUnavailableNotificationSent {
     sentAt Instant
 }
 
-@asyncapi({ channel: "OrderCancelledNotificationSentEventsChannel", topic: "notifications-consumer.events.order-cancelled-notification-sent" })
+@asyncapi({ channel: "OrderCancelledNotificationSentChannel", topic: "notifications-consumer.events.order-cancelled-notification-sent" })
 event OrderCancelledNotificationSent {
     notificationId String
     orderId String
@@ -126,7 +137,7 @@ event OrderCancelledNotificationSent {
     sentAt Instant
 }
 
-@asyncapi({ channel: "NotificationDeliveryFailedEventsChannel", topic: "notifications-consumer.events.notification-delivery-failed" })
+@asyncapi({ channel: "NotificationDeliveryFailedChannel", topic: "notifications-consumer.events.notification-delivery-failed" })
 event NotificationDeliveryFailed {
     notificationId String
     orderId String
