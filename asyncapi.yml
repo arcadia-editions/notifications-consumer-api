@@ -1,198 +1,146 @@
-asyncapi: 3.0.0
+asyncapi: 3.1.0
 id: urn:com.arcadiaeditions:notifications:consumer:asyncapi
+
 info:
-  title: "Arcadia Editions - Notifications Consumer"
-  version: 0.0.1
+  title: Arcadia Editions - Notifications Consumer
+  version: 0.1.0
   tags:
-    - name: "Default"
-    - name: "NotificationsConsumer"
+  - name: Default
+  - name: NotificationsConsumer
+
+servers:
+  develop:
+    $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-master.yml#/servers/develop
+
+x-application-bindings:
+  x-principal: notifications_consumer
+  x-clientId: notifications_consumer
+  x-groupId: notifications_consumer
 
 defaultContentType: application/json
 
 channels:
-  PaymentCapturedEventsChannel:
-    address: "payments-processing.events.payment-captured"
+  order-confirmation-sent-event-v1:
+    address: notifications-consumer.order-confirmation-sent.event.avro.v1
     messages:
-      SendOrderConfirmationInputMessage:
-        $ref: '#/components/messages/SendOrderConfirmationInputMessage'
-  StockUnavailableEventsChannel:
-    address: "catalog-inventory.events.stock-unavailable"
+      OrderConfirmationSentEvent:
+        $ref: "#/components/messages/OrderConfirmationSentEvent"
+    x-traits:
+    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicS
+    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicRetained
+    x-visibility: global
+  notification-delivery-failed-event-v1:
+    address: notifications-consumer.notification-delivery-failed.event.avro.v1
     messages:
-      SendStockUnavailableNotificationInputMessage:
-        $ref: '#/components/messages/SendStockUnavailableNotificationInputMessage'
-  OrderCancelledEventsChannel:
-    address: "orders-checkout.events.order-cancelled"
+      NotificationDeliveryFailedEvent:
+        $ref: "#/components/messages/NotificationDeliveryFailedEvent"
+    x-traits:
+    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicS
+    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicRetained
+    x-visibility: global
+  stock-unavailable-notification-sent-event-v1:
+    address: notifications-consumer.stock-unavailable-notification-sent.event.avro.v1
     messages:
-      SendOrderCancelledNotificationInputMessage:
-        $ref: '#/components/messages/SendOrderCancelledNotificationInputMessage'
-  OrderConfirmationSentEventsChannel:
-    address: "notifications-consumer.events.order-confirmation-sent"
+      StockUnavailableNotificationSentEvent:
+        $ref: "#/components/messages/StockUnavailableNotificationSentEvent"
+    x-traits:
+    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicS
+    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicRetained
+    x-visibility: global
+  order-cancelled-notification-sent-event-v1:
+    address: notifications-consumer.order-cancelled-notification-sent.event.avro.v1
     messages:
-      OrderConfirmationSentMessage:
-        $ref: '#/components/messages/OrderConfirmationSentMessage'
-  NotificationDeliveryFailedEventsChannel:
-    address: "notifications-consumer.events.notification-delivery-failed"
-    messages:
-      NotificationDeliveryFailedMessage:
-        $ref: '#/components/messages/NotificationDeliveryFailedMessage'
-  StockUnavailableNotificationSentEventsChannel:
-    address: "notifications-consumer.events.stock-unavailable-notification-sent"
-    messages:
-      StockUnavailableNotificationSentMessage:
-        $ref: '#/components/messages/StockUnavailableNotificationSentMessage'
-  OrderCancelledNotificationSentEventsChannel:
-    address: "notifications-consumer.events.order-cancelled-notification-sent"
-    messages:
-      OrderCancelledNotificationSentMessage:
-        $ref: '#/components/messages/OrderCancelledNotificationSentMessage'
+      OrderCancelledNotificationSentEvent:
+        $ref: "#/components/messages/OrderCancelledNotificationSentEvent"
+    x-traits:
+    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicS
+    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicRetained
+    x-visibility: global
 
 operations:
-  doSendOrderConfirmation:
-    action: receive
-    tags:
-      - name: NotificationsConsumer
-    channel:
-      $ref: '#/channels/PaymentCapturedEventsChannel'
-  doSendStockUnavailableNotification:
-    action: receive
-    tags:
-      - name: NotificationsConsumer
-    channel:
-      $ref: '#/channels/StockUnavailableEventsChannel'
-  doSendOrderCancelledNotification:
-    action: receive
-    tags:
-      - name: NotificationsConsumer
-    channel:
-      $ref: '#/channels/OrderCancelledEventsChannel'
   onOrderConfirmationSent:
     action: send
     tags:
-      - name: NotificationsConsumer
+    - name: NotificationsConsumer
     channel:
-      $ref: '#/channels/OrderConfirmationSentEventsChannel'
+      $ref: "#/channels/order-confirmation-sent-event-v1"
+    traits:
+    - $ref: "#/components/operationTraits/clientIdAndPrincipal"
   onNotificationDeliveryFailed:
     action: send
     tags:
-      - name: NotificationsConsumer
+    - name: NotificationsConsumer
     channel:
-      $ref: '#/channels/NotificationDeliveryFailedEventsChannel'
+      $ref: "#/channels/notification-delivery-failed-event-v1"
+    traits:
+    - $ref: "#/components/operationTraits/clientIdAndPrincipal"
   onStockUnavailableNotificationSent:
     action: send
     tags:
-      - name: NotificationsConsumer
+    - name: NotificationsConsumer
     channel:
-      $ref: '#/channels/StockUnavailableNotificationSentEventsChannel'
+      $ref: "#/channels/stock-unavailable-notification-sent-event-v1"
+    traits:
+    - $ref: "#/components/operationTraits/clientIdAndPrincipal"
   onOrderCancelledNotificationSent:
     action: send
     tags:
-      - name: NotificationsConsumer
+    - name: NotificationsConsumer
     channel:
-      $ref: '#/channels/OrderCancelledNotificationSentEventsChannel'
-
+      $ref: "#/channels/order-cancelled-notification-sent-event-v1"
+    traits:
+    - $ref: "#/components/operationTraits/clientIdAndPrincipal"
 
 components:
   messages:
-    SendOrderConfirmationInputMessage:
-      name: SendOrderConfirmationInputMessage
+    OrderConfirmationSentEvent:
+      name: OrderConfirmationSentEvent
       title: ""
       summary: ""
       traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
+      - $ref: "#/components/messageTraits/CommonHeaders"
       payload:
         schemaFormat: application/vnd.apache.avro+json;version=1.9.0
         schema:
-          $ref: "avro/SendOrderConfirmationInput.avsc"
-    SendStockUnavailableNotificationInputMessage:
-      name: SendStockUnavailableNotificationInputMessage
+          $ref: avro/OrderConfirmationSent.avsc
+    StockUnavailableNotificationSentEvent:
+      name: StockUnavailableNotificationSentEvent
       title: ""
       summary: ""
       traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
+      - $ref: "#/components/messageTraits/CommonHeaders"
       payload:
         schemaFormat: application/vnd.apache.avro+json;version=1.9.0
         schema:
-          $ref: "avro/SendStockUnavailableNotificationInput.avsc"
-    SendOrderCancelledNotificationInputMessage:
-      name: SendOrderCancelledNotificationInputMessage
+          $ref: avro/StockUnavailableNotificationSent.avsc
+    OrderCancelledNotificationSentEvent:
+      name: OrderCancelledNotificationSentEvent
       title: ""
       summary: ""
       traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
+      - $ref: "#/components/messageTraits/CommonHeaders"
       payload:
         schemaFormat: application/vnd.apache.avro+json;version=1.9.0
         schema:
-          $ref: "avro/SendOrderCancelledNotificationInput.avsc"
-    OrderConfirmationSentMessage:
-      name: OrderConfirmationSentMessage
+          $ref: avro/OrderCancelledNotificationSent.avsc
+    NotificationDeliveryFailedEvent:
+      name: NotificationDeliveryFailedEvent
       title: ""
       summary: ""
       traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
+      - $ref: "#/components/messageTraits/CommonHeaders"
       payload:
         schemaFormat: application/vnd.apache.avro+json;version=1.9.0
         schema:
-          $ref: "avro/OrderConfirmationSent.avsc"
-    StockUnavailableNotificationSentMessage:
-      name: StockUnavailableNotificationSentMessage
-      title: ""
-      summary: ""
-      traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
-      payload:
-        schemaFormat: application/vnd.apache.avro+json;version=1.9.0
-        schema:
-          $ref: "avro/StockUnavailableNotificationSent.avsc"
-    OrderCancelledNotificationSentMessage:
-      name: OrderCancelledNotificationSentMessage
-      title: ""
-      summary: ""
-      traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
-      payload:
-        schemaFormat: application/vnd.apache.avro+json;version=1.9.0
-        schema:
-          $ref: "avro/OrderCancelledNotificationSent.avsc"
-    NotificationDeliveryFailedMessage:
-      name: NotificationDeliveryFailedMessage
-      title: ""
-      summary: ""
-      traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
-      payload:
-        schemaFormat: application/vnd.apache.avro+json;version=1.9.0
-        schema:
-          $ref: "avro/NotificationDeliveryFailed.avsc"
-
+          $ref: avro/NotificationDeliveryFailed.avsc
   messageTraits:
     CommonHeaders:
-      headers:
-        type: object
-        properties:
-          kafka_messageKey:
-            type: "integer"
-            format: "int64"
-            description: This header value will be populated automatically at runtime
-            x-runtime-expression: $message.payload#/id
-          # CloudEvents Attributes
-          ce-id:
-            type: string
-            description: Unique identifier for the event
-            x-runtime-expression: $message.payload#{#this.id}
-          ce-source:
-            type: string
-            description: URI identifying the context where event happened
-            x-runtime-expression: $message.payload#{"NotificationsConsumer"}
-          ce-specversion:
-            type: string
-            description: CloudEvents specification version
-            x-runtime-expression: $message.payload#{"1.0"}
-          ce-type:
-            type: string
-            description: Event type
-            x-runtime-expression: $message.payload#{#this.getClass().getSimpleName()}
-          ce-time:
-            type: string
-            description: Timestamp of when the event happened
-            x-runtime-expression: $message.payload#{T(java.time.Instant).now().toString()}
-
+      $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-message-traits.yml#/components/messageTraits/CommonHeaders
+  operationTraits:
+    clientIdAndPrincipal:
+      bindings:
+        kafka:
+          x-principal:
+            $ref: "#/x-application-bindings/x-principal"
+          x-groupId:
+            $ref: "#/x-application-bindings/x-groupId"

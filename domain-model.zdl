@@ -1,5 +1,6 @@
 config {
     id "urn:com.arcadiaeditions:notifications:consumer"
+    version "0.1.0"
     title "Arcadia Editions - Notifications Consumer"
     basePackage "com.arcadiaeditions.notifications.consumer"
     persistence jpa
@@ -8,17 +9,31 @@ config {
         /** Generates an AsyncAPI v3 specification from this ZDL model. */
         ZDLToAsyncAPIPlugin {
             id "urn:com.arcadiaeditions:notifications:consumer:asyncapi"
+            applicationExtensions """
+            x-application-bindings:
+              x-principal: notifications_consumer
+              x-clientId: notifications_consumer
+              x-groupId: notifications_consumer
+            """
             schemaFormat avro
             idType integer
             idTypeFormat int64
             avroPackage com.arcadiaeditions.notifications.consumer.events.avro
             includeCloudEventsHeaders true
             includeKafkaCommonHeaders true
+            asyncapiOverlayFiles "https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-overlay.yml"
             targetFile "./asyncapi.yml"
         }
         ZDLToAsyncAPIClientPlugin {
             id "urn:com.arcadiaeditions:notifications:consumer:asyncapi:client"
+            applicationExtensions """
+            x-application-bindings:
+              x-principal: notifications_consumer
+              x-clientId: notifications_consumer
+              x-groupId: notifications_consumer
+            """
             title "Arcadia Editions - Notifications Consumer - AsyncAPI Client"
+            asyncapiOverlayFiles "https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-client-overlay.yml"
             targetFile "./asyncapi-client.yml"
         }
         /** Generates an OpenAPI 3.0 specification from this ZDL model. */

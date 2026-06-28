@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: "Arcadia Editions - Notifications Consumer"
-  version: 0.0.1
+  version: 0.1.0
   description: "Arcadia Editions - Notifications Consumer"
   contact:
     email: email@domain.com
@@ -23,10 +23,10 @@ tags:
   - name: "NotificationsConsumer"
 
 
-paths:
+paths: {}
 
 components:
-  schemas: {}
+  schemas:
 
     Page:
       type: object
