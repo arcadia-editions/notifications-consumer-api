@@ -3,7 +3,7 @@ id: urn:com.arcadiaeditions:notifications:consumer:asyncapi
 
 info:
   title: Arcadia Editions - Notifications Consumer
-  version: 0.1.0
+  version: 0.0.1
   tags:
   - name: Default
   - name: NotificationsConsumer

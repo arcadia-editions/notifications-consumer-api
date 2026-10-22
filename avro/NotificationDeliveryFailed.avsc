@@ -12,8 +12,12 @@
     "name" : "customerId",
     "type" : [ "null", "string" ]
   }, {
-    "name" : "sku",
-    "type" : [ "null", "string" ]
+    "name" : "skus",
+    "type" : {
+      "type" : "array",
+      "items" : [ "null", "string" ],
+      "java-class" : "java.util.List"
+    }
   }, {
     "name" : "type",
     "type" : "NotificationType"
