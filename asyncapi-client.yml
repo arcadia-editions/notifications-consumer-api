@@ -3,7 +3,7 @@ id: urn:com.arcadiaeditions:notifications:consumer:asyncapi:client
 
 info:
   title: Arcadia Editions - Notifications Consumer - AsyncAPI Client
-  version: 0.1.0
+  version: "0.0.0"
   description: Consumed AsyncAPI channels for Arcadia Editions - Notifications Consumer.
 
 x-application-bindings:
