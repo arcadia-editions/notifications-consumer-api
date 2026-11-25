@@ -3,7 +3,7 @@ id: urn:com.arcadiaeditions:notifications:consumer:asyncapi
 
 info:
   title: Arcadia Editions - Notifications Consumer
-  version: "0.1.0"
+  version: 0.1.0
   tags:
   - name: Default
   - name: NotificationsConsumer
@@ -125,8 +125,10 @@ components:
           $ref: avro/OrderCancelledNotificationSent.avsc
     NotificationDeliveryFailedEvent:
       name: NotificationDeliveryFailedEvent
-      title: ""
-      summary: ""
+      title: Ends place-order-flow as notificationFailed; &#x60;type&#x60; tells which
+        business outcome the customer was not told.
+      summary: Ends place-order-flow as notificationFailed; &#x60;type&#x60; tells
+        which business outcome the customer was not told.
       traits:
       - $ref: "#/components/messageTraits/CommonHeaders"
       payload:
